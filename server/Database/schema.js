@@ -23,6 +23,7 @@ const {
   GraphQLObjectType, 
   GraphQLString, 
   GraphQLInt,
+  GraphQLList,
   GraphQLSchema
 } = graghql;
 // this dstructure make: grap the variable of this function for us from graphql(instance of graphql package )
@@ -70,6 +71,12 @@ const autherType = new GraphQLObjectType({
 const rootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
   fields: {
+    books: {
+      type: new GraphQLList(bookType),
+      resolve(parent, args){
+        return books
+      }
+    },
     book: { // this query for particular book
       type: bookType,
       args: {id: {type: GraphQLInt}},
