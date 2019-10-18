@@ -36,6 +36,15 @@ const bookType = new GraphQLObjectType({
     id: {type: GraphQLInt},
     name: {type: GraphQLString},
     gener: {type: GraphQLString},
+    auther: {
+      type: autherType,
+      resolve(parent, args){
+        // console.log(555, parent);
+        const bookAuther = authers.filter(auth => auth.id === parent.autherID);
+        // console.log(666, bookAuther);
+        return bookAuther[0]
+      }
+    }
   }
 }
 });
@@ -45,7 +54,15 @@ const autherType = new GraphQLObjectType({
   fields: () => ({
     id: {type: GraphQLInt},
     name: {type: GraphQLString},
-    age: {type: GraphQLInt}
+    age: {type: GraphQLInt},
+    books: {
+      type: bookType,
+      resolve(parent, args){
+        console.log(777, parent.id);
+        const autherBookss = books.filter(boo => boo.autherID === parent.id)
+        console.log(888, autherBookss);
+      }
+    }
   })
 })
 
@@ -73,15 +90,6 @@ const rootQuery = new GraphQLObjectType({
         const particularAuther = authers.filter(auth => auth.id === args.id)
         // console.log(particularAuther);
         return particularAuther[0]
-      }
-    },
-    autherBooks: {
-      type: bookType,
-      args: {id: {type: GraphQLInt}},
-      resolve(parent, args){
-        const autherBooksCollection = books.filter(item => item.autherID === args.id);
-        // console.log(autherBooksCollection);
-        return autherBooksCollection;
       }
     }
   }
