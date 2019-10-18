@@ -55,10 +55,10 @@ const rootQuery = new GraphQLObjectType({
         // code to get data from db/other source
         // const particularBook = books.filter(book => book.id === args.id);
         // console.log(1111, books);
-        console.log(222, args.id);
+        // console.log(222, args.id);
         const book = books.filter(item => item.id === args.id)
-        console.log(333, book);
-        return books[0];
+        // console.log(333, book);
+        return book[0];
       }
     }
   }
