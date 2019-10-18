@@ -77,6 +77,12 @@ const rootQuery = new GraphQLObjectType({
         return books
       }
     },
+    authers: {
+      type: new GraphQLList(autherType),
+      resolve(parent, args){
+        return authers
+      }
+    },
     book: { // this query for particular book
       type: bookType,
       args: {id: {type: GraphQLInt}},
@@ -101,12 +107,6 @@ const rootQuery = new GraphQLObjectType({
     }
   }
 })
-
-
-// export {
-//   bookType,
-//   autherType
-// }
 
 module.exports = new GraphQLSchema({
   query: rootQuery
