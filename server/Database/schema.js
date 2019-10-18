@@ -4,7 +4,12 @@ const graghql = require('graphql');
 // My Schema contains (Book & Auther)
 // the (Book & Auther) will be objects
 
-const { GraphQLObjectType, GraphQLString, GraphQLInt } = graghql 
+const { 
+  GraphQLObjectType, 
+  GraphQLString, 
+  GraphQLInt,
+GraphQLSchema
+} = graghql;
 // this dstructure make: grap the variable of this function for us from graphql(instance of graphql package )
 // then the GraphQLObjectType is function that take an object 
 
@@ -28,9 +33,28 @@ const autherType = new GraphQLObjectType({
   })
 })
 
+// define the relationships
+const rootQuery = new GraphQLObjectType({
+  name: 'RootQueryType',
+  fields: {
+    book: { // this query for particular book
+      type: bookType,
+      args: {id: {type: GraphQLInt}},
+      resolve(parent, args){
+        // code to get data from db/other source
+      }
+    }
+  }
+})
 
-export {
-  bookType,
-  autherType
-}
+
+// export {
+//   bookType,
+//   autherType
+// }
+
+module.exports = new GraphQLSchema({
+  query: rootQuery
+});
+
 
