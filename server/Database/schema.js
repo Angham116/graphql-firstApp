@@ -5,11 +5,15 @@ const graghql = require('graphql');
 // but here I will use array to store the dummy data
 // dummy data
 let books = [
-  {id:1, name: 'First Book', gener: 'Fantasy'},
-  {id:2, name: 'Second Book', gener: 'Fantasy'},
-  {id:3, name: 'Third Book', gener: 'Science'}
+  {id:1, name: 'First Book', gener: 'Fantasy', autherID: 2},
+  {id:2, name: 'Second Book', gener: 'Fantasy', autherID: 1},
+  {id:3, name: 'Third Book', gener: 'Science', autherID: 2}
 ];
 
+let authers = [
+  {id:1, name: 'Auther 1', age: 32},
+  {id:2, name: 'Auther 2', age: 54}
+]
 
 // the Graphql schema describe objects of data and types 
 // My Schema contains (Book & Auther)
@@ -19,7 +23,7 @@ const {
   GraphQLObjectType, 
   GraphQLString, 
   GraphQLInt,
-GraphQLSchema
+  GraphQLSchema
 } = graghql;
 // this dstructure make: grap the variable of this function for us from graphql(instance of graphql package )
 // then the GraphQLObjectType is function that take an object 
@@ -40,7 +44,8 @@ const autherType = new GraphQLObjectType({
   name: 'Auther',
   fields: () => ({
     id: {type: GraphQLInt},
-    name: {type: GraphQLString}
+    name: {type: GraphQLString},
+    age: {type: GraphQLInt}
   })
 })
 
@@ -59,6 +64,24 @@ const rootQuery = new GraphQLObjectType({
         const book = books.filter(item => item.id === args.id)
         // console.log(333, book);
         return book[0];
+      }
+    },
+    auther: {
+      type: autherType,
+      args: {id: {type: GraphQLInt}},
+      resolve(parent, args){
+        const particularAuther = authers.filter(auth => auth.id === args.id)
+        // console.log(particularAuther);
+        return particularAuther[0]
+      }
+    },
+    autherBooks: {
+      type: bookType,
+      args: {id: {type: GraphQLInt}},
+      resolve(parent, args){
+        const autherBooksCollection = books.filter(item => item.autherID === args.id);
+        // console.log(autherBooksCollection);
+        return autherBooksCollection;
       }
     }
   }
