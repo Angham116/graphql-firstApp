@@ -130,6 +130,22 @@ const Mutations = new GraphQLObjectType({
         });
         return auther.save()
       }
+    },
+    addBook: {
+      type: bookType,
+      args: {
+        name: {type: GraphQLString},
+        gener: {type: GraphQLString},
+        autherID: {type: GraphQLInt}
+      },
+      resolve(parent, args){
+        let book = new Book({
+          name: args.name,
+          gener: args.gener,
+          autherID: args.autherID
+        })
+        return book.save();
+      }
     }
   }
 })
