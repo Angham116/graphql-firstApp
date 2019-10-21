@@ -24,12 +24,7 @@ const bookType = new GraphQLObjectType({
     auther: {
       type: autherType,
       resolve(parent, args){
-        console.log(111, Book);
-        console.log(555, parent);
-        // return Book.find({autherID: parent.id})
-        // const bookAuther = authers.filter(auth => auth.id === parent.autherID);
-        // console.log(666, bookAuther);
-        // return bookAuther[0]
+        return Auther.findById(parent.autherID)
       }
     }
   }
@@ -42,12 +37,10 @@ const autherType = new GraphQLObjectType({
     id: {type: GraphQLID},
     name: {type: GraphQLString},
     age: {type: GraphQLInt},
-    books: {
+    book: {
       type: new GraphQLList(bookType),
       resolve(parent, args){
-        // console.log(777, parent.id);
-        // const autherBookss = books.filter(boo => boo.autherID === parent.id)
-        // console.log(888, autherBookss);
+        return Auther.findById({id: parent.id})
       }
     }
   })
@@ -66,28 +59,22 @@ const rootQuery = new GraphQLObjectType({
     authers: {
       type: new GraphQLList(autherType),
       resolve(parent, args){
+        return Auther.find({})
       }
     },
-    book: { // this query for particular book
-      type: new GraphQLList(bookType),
+    book: {
+      type: bookType,
       args: {id: {type: GraphQLID}},
       resolve(parent, args){
-        // code to get data from db/other source
-        // const particularBook = books.filter(book => book.id === args.id);
-        // console.log(1111, books);
-        // console.log(222, args.id);
-        // const book = books.filter(item => item.id === args.id)
-        // console.log(333, book);
-        // return book[0];
+        console.log(333, args);
+        return Book.findById(args.id)
       }
     },
     auther: {
-      type: new GraphQLList(autherType),
+      type: autherType,
       args: {id: {type: GraphQLID}},
       resolve(parent, args){
-        // const particularAuther = authers.filter(auth => auth.id === args.id)
-        // console.log(particularAuther);
-        // return particularAuther[0]
+        return Auther.findById(args.id)
       }
     }
   }
