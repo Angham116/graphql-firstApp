@@ -24,7 +24,9 @@ const bookType = new GraphQLObjectType({
     auther: {
       type: autherType,
       resolve(parent, args){
-        // console.log(555, parent);
+        console.log(111, Book);
+        console.log(555, parent);
+        // return Book.find({autherID: parent.id})
         // const bookAuther = authers.filter(auth => auth.id === parent.autherID);
         // console.log(666, bookAuther);
         // return bookAuther[0]
@@ -58,6 +60,7 @@ const rootQuery = new GraphQLObjectType({
     books: {
       type: new GraphQLList(bookType),
       resolve(parent, args){
+        return Book.find({})
       }
     },
     authers: {
